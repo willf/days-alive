@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Days Alive Calculator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css"
+    />
+    <style>
+      body {
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.23.0/date-fns.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Days Alive Calculator</h1>
+      <div class="field">
+        <label class="label">Enter your birthdate:</label>
+        <div class="control">
+          <input class="input" type="date" id="birthdate" />
+        </div>
+      </div>
+      <div class="control">
+        <button class="button is-primary" onclick="calculateDays()">
+          Calculate
+        </button>
+      </div>
+      <table
+        class="table is-fullwidth is-striped is-hoverable"
+        id="resultTable"
+        style="margin-top: 20px; display: none"
+      >
+        <thead>
+          <tr>
+            <th>Days</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+      </table>
+    </div>
+
+    <script>
+      function calculateDays() {
+        const birthdate = new Date(document.getElementById("birthdate").value);
+        if (isNaN(birthdate)) {
+          alert("Please enter a valid date.");
+          return;
+        }
+
+        const milestones = [];
+        for (let i = 1000; i <= 35000; i += 1000) {
+          milestones.push(i);
+        }
+        milestones.reverse();
+        const resultBody = document.getElementById("resultBody");
+        resultBody.innerHTML = "";
+
+        milestones.forEach((days) => {
+          const milestoneDate = new Date(
+            birthdate.getTime() + days * 24 * 60 * 60 * 1000
+          );
+          const row = document.createElement("tr");
+          const daysCell = document.createElement("td");
+          const dateCell = document.createElement("td");
+          daysCell.textContent = days.toLocaleString();
+          dateCell.textContent = milestoneDate.toDateString();
+          row.appendChild(daysCell);
+          row.appendChild(dateCell);
+          resultBody.appendChild(row);
+        });
+
+        document.getElementById("resultTable").style.display = "table";
+      }
+    </script>
+  </body>
+</html>
